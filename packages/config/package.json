@@ -1,0 +1,6 @@
+{
+  "name": "@chronos/config",
+  "version": "0.0.0",
+  "main": "eslint-preset.js",
+  "private": true
+}

@@ -1,0 +1,56 @@
+[package]
+name = "tauri-app"
+version = "0.1.0"
+description = "Chronos Sentinel — Desktop Tracking Agent"
+authors = ["Siddhartha"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+tonic-build = "0.11"
+protoc-bin-vendored = "3.0.0"
+
+[dependencies]
+# Tauri & System
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# gRPC Client
+tonic = "0.11"
+prost = "0.12"
+
+# Async Runtime
+tokio = { version = "1", features = ["full"] }
+tokio-stream = "0.1"
+
+# SQLite for Local-First Persistence
+sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "macros"] }
+
+# Unique Log IDs
+ulid = "1.1"
+
+# OS Keychain for API Key Storage
+keyring = "2.3"
+
+# System Information & Random
+hostname = "0.3"
+rand = "0.8"
+once_cell = "1.19"
+
+# Windows Specific
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.52", features = [
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+] }
+
+# macOS Specific
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.5"
+objc2-app-kit = "0.2"
+apple-sys = "0.2"

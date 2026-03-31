@@ -1,0 +1,35 @@
+--- Process 44004 created
+--- Process 44004 loaded C:\Windows\System32\ntdll.dll at 00007ff8623c0000
+--- Process 44004 loaded C:\Windows\System32\kernel32.dll at 00007ff860ce0000
+--- Process 44004 loaded C:\Windows\System32\KernelBase.dll at 00007ff85fd60000
+--- Process 44004 loaded C:\Windows\System32\advapi32.dll at 00007ff861260000
+--- Process 44004 loaded C:\Windows\System32\msvcrt.dll at 00007ff860160000
+--- Process 44004 thread 17404 created
+--- Process 44004 loaded C:\Windows\System32\sechost.dll at 00007ff8602a0000
+--- Process 44004 loaded C:\Windows\System32\rpcrt4.dll at 00007ff860f50000
+--- Process 44004 thread 29504 created
+--- Process 44004 loaded C:\Windows\System32\user32.dll at 00007ff861d40000
+--- Process 44004 loaded C:\Windows\System32\win32u.dll at 00007ff85ed30000
+--- Process 44004 loaded C:\Windows\System32\gdi32.dll at 00007ff861220000
+--- Process 44004 loaded C:\Windows\System32\gdi32full.dll at 00007ff85f3c0000
+--- Process 44004 loaded C:\Windows\System32\msvcp_win.dll at 00007ff85ed60000
+--- Process 44004 loaded C:\Windows\System32\ucrtbase.dll at 00007ff85f100000
+--- Process 44004 thread 6940 created
+--- Process 44004 loaded C:\Windows\System32\shlwapi.dll at 00007ff861550000
+--- Process 44004 loaded C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8037_none_87ebc5097a2f9e52\comctl32.dll at 00007ff842e60000
+--- Process 44004 loaded C:\Windows\System32\windows.storage.dll at 00007ff85f4f0000
+--- Process 44004 loaded C:\Windows\System32\combase.dll at 00007ff861f10000
+--- Process 44004 loaded C:\Windows\System32\ole32.dll at 00007ff860b40000
+--- Process 44004 loaded C:\Windows\System32\shell32.dll at 00007ff8615c0000
+--- Process 44004 loaded C:\Windows\System32\WinTypes.dll at 00007ff85f250000
+--- Process 44004 loaded C:\Windows\System32\oleaut32.dll at 00007ff861100000
+--- Process 44004 loaded C:\Windows\System32\dwmapi.dll at 00007ff85c470000
+--- Process 44004 loaded C:\Windows\System32\ws2_32.dll at 00007ff860530000
+--- Process 44004 loaded C:\Windows\System32\bcryptprimitives.dll at 00007ff85f050000
+--- Process 44004 loaded C:\Windows\System32\vcruntime140_1.dll at 00007ff851840000
+--- Process 44004 loaded C:\Windows\System32\vcruntime140.dll at 00007ff844310000
+--- Process 44004, exception c0000139 at 00007ff8623cdd3f
+--- Process 44004 thread 17404 exited with status 0xc0000139
+--- Process 44004 thread 29504 exited with status 0xc0000139
+--- Process 44004 thread 28240 exited with status 0xc0000139
+--- Process 44004 exited with status 0xc0000139

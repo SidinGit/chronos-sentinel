@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package activity;
+option go_package = "github.com/siddhartha/chronos-sentinel/ingestor/proto";
+
+service Telemetry {
+  // Bidirectional stream for high-frequency tracking
+  rpc StreamLogs(stream ActivityFrame) returns (stream SyncResponse);
+}
+
+message ActivityFrame {
+  string uuid = 1;          
+  string device_id = 2;
+  string app_name = 3;      
+  string window_title = 4;  
+  int64 start_time = 5;     
+  int64 duration_ms = 6;
+  bool is_idle = 7;         
+}
+
+message SyncResponse {
+  string last_processed_uuid = 1;
+  bool success = 2;
+}
+
+
+service AuthService {
+  // Step 1: Agent asks for a code
+  rpc InitiatePairing(PairingRequest) returns (PairingResponse);
+  // Step 2: Agent polls to see if user entered the code on the web
+  rpc CheckPairingStatus(PairingRequest) returns (TokenResponse);
+}
+
+message PairingRequest {
+  string hardware_id = 1;
+}
+
+message PairingResponse {
+  string user_code = 1; // e.g., "AB-123"
+  int32 expires_in = 2;
+}
+
+message TokenResponse {
+  bool authenticated = 1;
+  string api_key = 2; // The permanent secret
+}

@@ -1,0 +1,6 @@
+{
+  "name": "ingestor",
+  "scripts": {
+    "proto:gen": "protoc --proto_path=../../packages/proto --go_out=. --go-grpc_out=. ../../packages/proto/activity.proto"
+  }
+}
