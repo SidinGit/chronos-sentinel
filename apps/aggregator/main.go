@@ -27,6 +27,9 @@ func main() {
 	// 1. Connect to MongoDB
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
+		mongoURI = os.Getenv("MONGODB_URI")
+	}
+	if mongoURI == "" {
 		mongoURI = DefaultMongoURI
 	}
 	store, err := NewStore(mongoURI)

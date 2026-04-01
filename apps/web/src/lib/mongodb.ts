@@ -1,6 +1,6 @@
 import { MongoClient, type Db } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017';
 const DB_NAME = 'chronos_sentinel';
 
 

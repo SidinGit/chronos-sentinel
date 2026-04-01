@@ -93,9 +93,13 @@ func main() {
 	go worker.Start(sessionChan)
 
 	// ── gRPC Server ──────────────────────────────────────────
-	lis, err := net.Listen("tcp", ":50051")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "50051"
+	}
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Fatalf("❌ Failed to listen on :50051: %v", err)
+		log.Fatalf("❌ Failed to listen on :%s: %v", port, err)
 	}
 
 	s := grpc.NewServer(
