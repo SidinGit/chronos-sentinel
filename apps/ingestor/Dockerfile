@@ -15,5 +15,5 @@ FROM alpine:3.19
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /app/ingestor /usr/local/bin/ingestor
 
-EXPOSE 50051 8080
+EXPOSE 50051
 ENTRYPOINT ["/usr/local/bin/ingestor"]

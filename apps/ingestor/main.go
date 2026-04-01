@@ -3,16 +3,14 @@ package main
 import (
 	"context"
 	"log"
-	"net"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"net/http"
+	"strings"
 
 	pb "github.com/siddhartha/chronos-sentinel/ingestor/proto"
 )
@@ -98,10 +96,6 @@ func main() {
 	if port == "" {
 		port = "50051"
 	}
-	lis, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		log.Fatalf("❌ Failed to listen on :%s: %v", port, err)
-	}
 
 	s := grpc.NewServer(
 		grpc.UnaryInterceptor(authInterceptor),
@@ -124,17 +118,20 @@ func main() {
 		}
 	}()
 
-	// ── Graceful Shutdown ────────────────────────────────────
-	go func() {
-		quit := make(chan os.Signal, 1)
-		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-		<-quit
-		log.Println("🛑 Shutting down ingestor...")
-		s.GracefulStop()
-	}()
+	// ── Unified Handler (gRPC + HTTP Health) ──────────────────
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.ProtoMajor == 2 && strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {
+			s.ServeHTTP(w, r)
+		} else if r.URL.Path == "/health" {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("HEALTHY"))
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	})
 
-	log.Println("⏱️  Go Nexus Ingestor running on :50051...")
-	if err := s.Serve(lis); err != nil {
+	log.Printf("⏱️  Universal Ingestor running on :%s (gRPC & HTTP enabled)", port)
+	if err := http.ListenAndServe(":"+port, handler); err != nil {
 		log.Fatalf("❌ Failed to serve: %v", err)
 	}
 }
