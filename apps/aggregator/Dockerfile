@@ -15,4 +15,5 @@ FROM alpine:3.19
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /app/aggregator /usr/local/bin/aggregator
 
+EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/aggregator"]

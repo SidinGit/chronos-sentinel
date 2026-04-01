@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"net/http"
 )
 
 // ActivityFrame represents the incoming JSON message from RabbitMQ.
@@ -72,6 +73,18 @@ func main() {
 			// Success! Acknowledge message removing it from the queue
 			msg.Ack(false)
 			log.Printf("✔️ Processed heartbeat for [%s | %s]", frame.AppName, frame.WindowTitle)
+		}
+	}()
+
+	// ── HTTP Health Check (For Render / UptimeRobot) ─────────
+	go func() {
+		http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("HEALTHY"))
+		})
+		log.Println("🏥 Health check server running on :8080")
+		if err := http.ListenAndServe(":8080", nil); err != nil {
+			log.Printf("❌ Health check server failed: %v", err)
 		}
 	}()
 
