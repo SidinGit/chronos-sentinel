@@ -1,8 +1,10 @@
-import { MongoClient, type Db } from 'mongodb';
+import { MongoClient, type Db } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017';
-const DB_NAME = 'chronos_sentinel';
-
+const MONGODB_URI =
+  process.env.MONGODB_URI ||
+  process.env.MONGO_URI ||
+  "mongodb://localhost:27017";
+const DB_NAME = "chronos_sentinel";
 
 let cachedDb: Db | null = null;
 
@@ -12,11 +14,11 @@ let cachedDb: Db | null = null;
  * within a single warm function instance.
  */
 export async function getDatabase(): Promise<Db> {
-    if (cachedDb) return cachedDb;
+  if (cachedDb) return cachedDb;
 
-    const client = new MongoClient(MONGODB_URI);
-    await client.connect();
-    cachedDb = client.db(DB_NAME);
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  cachedDb = client.db(DB_NAME);
 
-    return cachedDb;
+  return cachedDb;
 }

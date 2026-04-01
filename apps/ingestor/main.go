@@ -35,7 +35,7 @@ func (s *telemetryServer) StreamLogs(stream pb.Telemetry_StreamLogsServer) error
 			log.Printf("Pulse Update Error: %v", err)
 		}
 
-		// Push the raw frame to the worker. 
+		// Push the raw frame to the worker.
 		// The worker publishes to RabbitMQ and updates the Redis feed.
 		s.sessionChan <- frame
 
@@ -53,8 +53,8 @@ func (s *telemetryServer) StreamLogs(stream pb.Telemetry_StreamLogsServer) error
 // Stream RPCs (like StreamLogs) should use a stream interceptor variant in production.
 func authInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	// Whitelist pairing endpoints since the device has no API Key yet
-	if info.FullMethod == "/activity.AuthService/InitiatePairing" || 
-	   info.FullMethod == "/activity.AuthService/CheckPairingStatus" {
+	if info.FullMethod == "/activity.AuthService/InitiatePairing" ||
+		info.FullMethod == "/activity.AuthService/CheckPairingStatus" {
 		return handler(ctx, req)
 	}
 
