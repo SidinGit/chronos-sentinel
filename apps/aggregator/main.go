@@ -78,12 +78,16 @@ func main() {
 
 	// ── HTTP Health Check (For Render / UptimeRobot) ─────────
 	go func() {
+		hPort := os.Getenv("PORT")
+		if hPort == "" {
+			hPort = "8080"
+		}
 		http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("HEALTHY"))
 		})
-		log.Println("🏥 Health check server running on :8080")
-		if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Printf("🏥 Health check server running on :%s", hPort)
+		if err := http.ListenAndServe(":"+hPort, nil); err != nil {
 			log.Printf("❌ Health check server failed: %v", err)
 		}
 	}()
