@@ -3,7 +3,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "outputs": ["dist/**", ".next/**"],
+      "env": [
+        "MONGO_URI",
+        "MONGODB_URI",
+        "REDIS_URL",
+        "RABBITMQ_URL",
+        "NEXTAUTH_URL",
+        "NEXTAUTH_SECRET",
+        "ADMIN_EMAIL",
+        "ADMIN_PASSWORD"
+      ]
     },
     "proto:gen": {
       "cache": false
