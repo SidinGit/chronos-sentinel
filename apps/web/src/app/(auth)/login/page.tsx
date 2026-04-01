@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import logo from '../../icon.png';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -46,10 +48,14 @@ export default function LoginPage() {
         <main className="flex min-h-screen items-center justify-center bg-background p-4">
             <Card className="w-full max-w-sm">
                 <CardHeader className="space-y-1 flex flex-col items-center">
-                    <div className="bg-primary/10 p-3 rounded-full mb-2">
-                        <Shield className="w-6 h-6 text-primary" />
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden mb-4">
+                        <Image 
+                            src={logo} 
+                            alt="Sentinel Logo" 
+                            className="h-full w-full object-contain grayscale brightness-0 invert" 
+                        />
                     </div>
-                    <CardTitle className="text-2xl font-bold tracking-tight">Command Center</CardTitle>
+                    <CardTitle className="text-3xl font-black tracking-tighter uppercase italic">Sentinel</CardTitle>
                     <CardDescription>Enter your admin credentials</CardDescription>
                 </CardHeader>
                 <CardContent>

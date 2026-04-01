@@ -1,17 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { useLayout } from '@/components/layout-provider';
 import { cn } from '@/lib/utils';
+import logo from '../app/icon.png';
 import { 
     LayoutDashboard, 
     MonitorSmartphone, 
     Clock, 
     Settings, 
     LogOut,
-    Activity,
     ChevronLeft,
     ChevronRight
 } from 'lucide-react';
@@ -32,11 +33,16 @@ export function Sidebar() {
             "flex h-screen flex-col border-r bg-card px-3 py-4 transition-all duration-300",
             isSidebarCollapsed ? "w-20 items-center" : "w-64"
         )}>
-            <div className={cn("mb-8 flex items-center gap-2", isSidebarCollapsed ? "justify-center" : "px-3")}>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-                    <Activity className="h-5 w-5 text-primary-foreground" />
+            <div className={cn("mb-8 flex items-center gap-3", isSidebarCollapsed ? "justify-center" : "px-3")}>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden">
+                    <Image 
+                        src={logo} 
+                        alt="Sentinel Logo" 
+                        className="h-full w-full object-contain grayscale brightness-0 invert" 
+                        priority
+                    />
                 </div>
-                {!isSidebarCollapsed && <span className="text-lg font-bold tracking-tight">Sentinel</span>}
+                {!isSidebarCollapsed && <span className="text-2xl font-black tracking-tighter uppercase italic">Sentinel</span>}
             </div>
 
             <nav className="flex-1 space-y-1">

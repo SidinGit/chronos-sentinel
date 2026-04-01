@@ -1,6 +1,28 @@
+import { Metadata, Viewport } from 'next';
 import { Providers } from './providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
+
+export const metadata: Metadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+    title: {
+        template: '%s | Chronos Sentinel',
+        default: 'Chronos Sentinel | Activity Guard',
+    },
+    description: 'Enterprise-grade work tracking and device security dashboard.',
+    manifest: '/manifest.json',
+    icons: {
+        icon: '/icon.png',
+        shortcut: '/icon.png',
+        apple: '/icon.png',
+    },
+};
+
+export const viewport: Viewport = {
+    themeColor: '#000000',
+    width: 'device-width',
+    initialScale: 1,
+};
 
 export default function RootLayout({
     children,
@@ -8,18 +30,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        // suppressHydrationWarning is required by next-themes
         <html lang="en" suppressHydrationWarning>
-            <head>
-                <meta charSet="utf-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Chronos Sentinel</title>
-                <meta
-                    name="description"
-                    content="Chronos Sentinel dashboard for work tracking and device management."
-                />
-            </head>
-            <body className="antialiased min-h-screen">
+            <body className="antialiased min-h-screen font-sans selection:bg-primary/20">
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"
