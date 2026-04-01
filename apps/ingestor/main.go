@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"net/http"
 
 	pb "github.com/siddhartha/chronos-sentinel/ingestor/proto"
 )
@@ -110,6 +111,18 @@ func main() {
 		pulse:       pulseCache,
 	})
 	pb.RegisterAuthServiceServer(s, NewAuthServer(rdb))
+
+	// ── HTTP Health Check (For Render / UptimeRobot) ─────────
+	go func() {
+		http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("HEALTHY"))
+		})
+		log.Println("🏥 Health check server running on :8080")
+		if err := http.ListenAndServe(":8080", nil); err != nil {
+			log.Printf("❌ Health check server failed: %v", err)
+		}
+	}()
 
 	// ── Graceful Shutdown ────────────────────────────────────
 	go func() {
