@@ -6,17 +6,6 @@ import { StatsCards } from '@/components/stats-cards';
 import { Timeline } from '@/components/timeline';
 import { SessionList } from '@/components/session-list';
 
-interface Session {
-    _id?: string;
-    device_id: string;
-    app_name: string;
-    window_title?: string;
-    start_time: number;
-    end_time: number;
-    duration_ms: number;
-    is_idle: boolean;
-}
-
 export default function DashboardPage() {
     const [sessions, setSessions] = useState<any[]>([]); // For Timeline
     const [feed, setFeed] = useState<any[]>([]);         // For Recent Sessions (Table)
@@ -40,8 +29,8 @@ export default function DashboardPage() {
                     const mapped = data.sessions.map((s: any) => ({
                         id: s._id || Math.random().toString(),
                         app: s.app_name,
-                        title: s.window_title || '',
-                        start: s.last_seen || s.created_at, // Use the new UPSERT fields
+                        title: s.window_title || s.app_name,
+                        start: s.start_time || s.created_at || s.last_seen || 0,
                         duration: s.duration_ms,
                         isIdle: s.is_idle || false,
                         device_id: s.device_id
@@ -92,7 +81,7 @@ export default function DashboardPage() {
                      const mappedFeed = data.feed.map((f: any) => ({
                         id: Math.random().toString(),
                         app: f.app_name,
-                        title: f.window_title || '',
+                        title: f.window_title || f.app_name,
                         start: f.timestamp,
                         duration: 5000, // 5s heartbeat
                         isIdle: f.is_idle || false,
@@ -135,7 +124,7 @@ export default function DashboardPage() {
     }, []);
 
     return (
-        <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto">
+        <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-4">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Overview</h1>

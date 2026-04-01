@@ -95,7 +95,7 @@ pub async fn start_sync_engine(pool: SqlitePool, api_key: String, endpoint: Stri
                     }
                 }
 
-                sleep(Duration::from_secs(2)).await; // Cadence
+                sleep(Duration::from_secs(5)).await; // Cadence
             }
         });
 

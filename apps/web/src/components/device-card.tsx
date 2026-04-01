@@ -1,4 +1,8 @@
-import { MonitorSmartphone, Settings2, Trash2 } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { MonitorSmartphone, Settings2, Trash2, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,18 +13,37 @@ interface DeviceCardProps {
         id: string;
         name: string;
         isOnline: boolean;
+        isRevoked: boolean;
         lastSeen: number | null;
     };
 }
 
 export function DeviceCard({ device }: DeviceCardProps) {
+    const [isRevoking, setIsRevoking] = useState(false);
+    const router = useRouter();
+
     const isOnline = device.isOnline;
+    const isRevoked = device.isRevoked;
     
     // Quick time formatter
     const formatLastSeen = (ms: number | null) => {
         if (!ms) return 'Never';
         const date = new Date(ms);
         return date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    const handleRevoke = async () => {
+        setIsRevoking(true);
+        try {
+            const res = await fetch(`/api/devices/${device.id}`, { method: 'DELETE' });
+            if (res.ok) {
+                router.refresh(); // Refresh page to see updated Revoked state
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsRevoking(false);
+        }
     };
 
     return (
@@ -38,9 +61,14 @@ export function DeviceCard({ device }: DeviceCardProps) {
                             </CardDescription>
                         </div>
                     </div>
-                    <Badge variant={isOnline ? 'success' : 'secondary'} className="rounded-full">
-                        {isOnline ? 'Online' : 'Offline'}
-                    </Badge>
+                    
+                    {isRevoked ? (
+                        <Badge variant="destructive" className="rounded-full">Revoked</Badge>
+                    ) : (
+                        <Badge variant={isOnline ? 'success' : 'secondary'} className="rounded-full">
+                            {isOnline ? 'Online' : 'Offline'}
+                        </Badge>
+                    )}
                 </div>
             </CardHeader>
             <Separator />
@@ -55,10 +83,18 @@ export function DeviceCard({ device }: DeviceCardProps) {
                         <Settings2 className="w-3 h-3 mr-2" />
                         Config
                     </Button>
-                    <Button variant="destructive" size="sm" className="w-full text-xs bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground">
-                        <Trash2 className="w-3 h-3 mr-2" />
-                        Revoke
-                    </Button>
+                    {!isRevoked && (
+                        <Button 
+                            variant="destructive" 
+                            size="sm" 
+                            className="w-full text-xs bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                            disabled={isRevoking}
+                            onClick={handleRevoke}
+                        >
+                            {isRevoking ? <Loader2 className="w-3 h-3 mr-2 animate-spin" /> : <Trash2 className="w-3 h-3 mr-2" />}
+                            Revoke
+                        </Button>
+                    )}
                 </div>
             </CardContent>
         </Card>

@@ -48,7 +48,7 @@ export default function SessionsPage() {
                     data.sessions.forEach((s: WebSession) => {
                         // THE TUPLE KEY: Grouping by both App and the Window Title (The Task)
                         const app = s.app_name;
-                        const title = s.window_title || '';
+                        const title = s.window_title || s.app_name;
                         const groupKey = `${app}-${title}`;
                         
                         if (!groups[groupKey]) {
@@ -101,7 +101,7 @@ export default function SessionsPage() {
     };
 
     return (
-        <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto">
+        <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-4">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Work History</h1>
                 <p className="text-muted-foreground mt-1">
@@ -110,8 +110,9 @@ export default function SessionsPage() {
             </div>
 
             <div className="rounded-xl border bg-card/50 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 text-card-foreground shadow-sm overflow-hidden">
+                <div className="w-full max-h-[600px] overflow-auto">
                 <Table>
-                    <TableHeader className="bg-muted/50">
+                    <TableHeader className="bg-muted/50 sticky top-0 z-10 shadow-sm">
                         <TableRow>
                             <TableHead className="h-12 px-6">Task</TableHead>
                             <TableHead className="h-12 px-6">Total Active Time</TableHead>
@@ -155,6 +156,7 @@ export default function SessionsPage() {
                         )}
                     </TableBody>
                 </Table>
+                </div>
             </div>
         </div>
     );

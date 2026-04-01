@@ -58,7 +58,7 @@ export function SessionList({ sessions }: SessionListProps) {
                         <p className="text-lg font-medium text-foreground">Awaiting Ingestion...</p>
                     </div>
                 ) : (
-                    <div className="relative w-full overflow-auto max-h-[400px]">
+                    <div className="relative w-full max-h-[500px] overflow-auto">
                         <table className="w-full caption-bottom text-sm">
                             <thead className="sticky top-0 z-10 bg-muted/50 backdrop-blur-md">
                                 <tr className="border-b transition-colors hover:bg-muted/50">

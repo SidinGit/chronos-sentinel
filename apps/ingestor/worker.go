@@ -44,6 +44,12 @@ func (w *Worker) Start(ch chan *pb.ActivityFrame) {
 func (w *Worker) process(frame *pb.ActivityFrame) {
 	ctx := context.Background()
 
+	// 0. ZERO-OVERHEAD SECURITY GATE: CHECK IF REVOKED
+	isRevoked, err := w.rdb.Exists(ctx, "revoked:"+frame.DeviceId).Result()
+	if err == nil && isRevoked > 0 {
+		return // Silently drop the payload; device access is terminated
+	}
+
 	// 1. PUBLISH TO RABBITMQ — Consumer will pick this up and upsert MongoDB
 	body, err := json.Marshal(frame)
 	if err != nil {

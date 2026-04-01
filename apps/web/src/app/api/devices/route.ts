@@ -18,12 +18,22 @@ export async function GET() {
         const activeKeys = await redis.keys(`${PULSE_PREFIX}*`);
         const onlineIds = activeKeys.map((k) => k.replace(PULSE_PREFIX, ''));
 
-        const devices = deviceIds.map((id: string) => ({
-            id,
-            name: id, // In a real app we'd join with a `devices` collection for friendly names
-            isOnline: onlineIds.includes(id),
-            lastSeen: onlineIds.includes(id) ? Date.now() : null, // Would query latest session end_time if offline
-        }));
+        // Fetch our blocklist of revoked devices
+        const revokedRecords = await db.collection('revoked_devices').find({}).toArray();
+        const revokedIds = revokedRecords.map((r) => r.device_id);
+
+        const devices = deviceIds.map((id: string) => {
+            const isRevoked = revokedIds.includes(id);
+            const isOnline = !isRevoked && onlineIds.includes(id);
+            
+            return {
+                id,
+                name: id, // In a real app we'd join with a `devices` collection for friendly names
+                isOnline,
+                isRevoked,
+                lastSeen: isOnline ? Date.now() : null, // Would query latest session end_time if offline
+            };
+        });
 
         return NextResponse.json({ devices });
     } catch (error) {

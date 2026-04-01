@@ -58,11 +58,11 @@ func (s *Store) UpsertSession(frame ActivityFrame) error {
 			"duration_ms": 5000, // 5s heartbeat per the new plan
 		},
 		"$set": bson.M{
-			"last_seen": frame.StartTime,
-			"is_idle":   frame.IsIdle,
+			"end_time": frame.StartTime,
+			"is_idle":  frame.IsIdle,
 		},
 		"$setOnInsert": bson.M{
-			"created_at": time.Now(),
+			"start_time": frame.StartTime,
 		},
 	}
 

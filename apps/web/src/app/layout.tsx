@@ -1,4 +1,5 @@
 import { Providers } from './providers';
+import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 export default function RootLayout({
@@ -7,8 +8,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        // Forcing dark mode on root element for SaaS aesthetic
-        <html lang="en" className="dark">
+        // suppressHydrationWarning is required by next-themes
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,7 +20,14 @@ export default function RootLayout({
                 />
             </head>
             <body className="antialiased min-h-screen">
-                <Providers>{children}</Providers>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <Providers>{children}</Providers>
+                </ThemeProvider>
             </body>
         </html>
     );
